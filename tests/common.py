@@ -14,15 +14,16 @@ from homeassistant.const import EVENT_HOMEASSISTANT_CLOSE
 from homeassistant.helpers import storage
 from homeassistant.helpers.device_registry import DeviceRegistry
 from homeassistant.helpers.entity_registry import EntityRegistry
+from homeassistant.helpers.issue_registry import IssueRegistry
 import homeassistant.util.dt as date_util
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
 from custom_components.hacs.repositories.base import HacsRepository
-from custom_components.hacs.utils.logger import get_hacs_logger
+from custom_components.hacs.utils.logger import LOGGER
 
 from tests.async_mock import AsyncMock, Mock, patch
 
-_LOGGER = get_hacs_logger()
+_LOGGER = LOGGER
 TOKEN = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 INSTANCES = []
 
@@ -53,7 +54,7 @@ def dummy_repository_base(hacs, repository=None):
     repository.hacs = hacs
     repository.hacs.hass = hacs.hass
     repository.hacs.core.config_path = hacs.hass.config.path()
-    repository.logger = get_hacs_logger()
+    repository.logger = LOGGER
     repository.data.domain = "test"
     repository.data.last_version = "3"
     repository.data.selected_tag = "3"
@@ -133,6 +134,7 @@ async def async_test_home_assistant(loop, tmpdir):
         "custom_components": {},
         "device_registry": DeviceRegistry(hass),
         "entity_registry": EntityRegistry(hass),
+        "issue_registry": IssueRegistry(hass),
     }
 
     hass.config_entries = config_entries.ConfigEntries(hass, {})

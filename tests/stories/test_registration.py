@@ -93,7 +93,10 @@ async def test_registration(
         ("home-assistant/addons", AddonRepositoryException.exception_message),
         ("hassio-addons/some-addon", AddonRepositoryException.exception_message),
         ("some-user/addons", AddonRepositoryException.exception_message),
-        ("some-user/some-invalid-repo", "Repository structure for main is not compliant"),
+        (
+            "some-user/some-invalid-repo",
+            "<Integration some-user/some-invalid-repo> Repository structure for main is not compliant",
+        ),
     ),
 )
 async def test_registration_issues(
@@ -148,7 +151,6 @@ async def test_registration_issues(
 
     assert hacs.repositories.get_by_full_name(repository_full_name) is None
     with pytest.raises(HacsException, match=expected_message):
-
         await hacs.async_register_repository(
             repository_full_name, HacsCategory.INTEGRATION, check=True
         )
